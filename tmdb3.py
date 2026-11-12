@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 df = pd.read_csv("archive/tmdb_5000_movies.csv")
 print(df.shape)
@@ -25,3 +26,20 @@ by_year = mask2[mask2["count"]>= 20]
 print(by_year.sort_values("median", ascending = False))
 print(by_year.shape)
 print(df["release_date"].max())
+
+def get_names(text):
+    items = json.loads(text)
+    return[g["name"] for g in items ]
+
+clean["genre_list"] = clean["genres"].apply(get_names)
+print(clean[["title", "genre_list"]].head())
+
+by_genre = clean.explode("genre_list")
+print(clean.shape)
+print(by_genre.shape)
+
+genre_stats = by_genre.groupby("genre_list")["roi"].agg(["median", "count"])
+print(genre_stats.sort_values("count"))
+
+big_genre = genre_stats[genre_stats["count"]>= 30]
+print(big_genre.sort_values("median", ascending = False))
