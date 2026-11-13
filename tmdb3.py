@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import matplotlib.pyplot as plt
 df = pd.read_csv("archive/tmdb_5000_movies.csv")
 print(df.shape)
 print(df.columns)
@@ -43,3 +44,26 @@ print(genre_stats.sort_values("count"))
 
 big_genre = genre_stats[genre_stats["count"]>= 30]
 print(big_genre.sort_values("median", ascending = False))
+
+# chart 1 : median roi by genre
+big_genre = big_genre.sort_values("median", ascending = True)
+fig, ax = plt.subplots(figsize =(8,6))
+ax.barh(big_genre.index, big_genre["median"])  # name then values 
+ax.set_title("Median ROI by genre")
+ax.set_xlabel("Median ROI (profit / budget)")   # stops the label from being cut off
+fig.tight_layout()
+fig.savefig("charts/genre_roi.png")
+plt.show()
+
+# chart 2: median roi by year
+by_year = by_year.sort_index()
+fig, ax = plt.subplots(figsize =(8,5))
+ax.plot(by_year.index, by_year["median"], marker="o")
+ax.axhline(clean["roi"].median(), linestyle = "--", color ="red", label = "Overall median")
+ax.set_title("Median ROI by year")
+ax.set_xlabel("Year")
+ax.set_ylabel("Median ROI (profit / budget)")
+ax.legend()
+fig.tight_layout()
+fig.savefig("charts/roi_by_year.png")
+plt.show()
