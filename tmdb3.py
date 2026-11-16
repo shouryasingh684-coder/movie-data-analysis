@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 df = pd.read_csv("archive/tmdb_5000_movies.csv")
 print(df.shape)
 print(df.columns)
@@ -66,4 +67,35 @@ ax.set_ylabel("Median ROI (profit / budget)")
 ax.legend()
 fig.tight_layout()
 fig.savefig("charts/roi_by_year.png")
+plt.show()
+
+
+roi_small = clean[clean["roi"] < 10]
+print(len(clean), len(roi_small))
+
+fig, ax = plt.subplots(figsize = (8,5))
+sns.histplot(data = roi_small, x = "roi", bins = 40, ax = ax)
+ax.set_title("Distribution of ROI (movies under 10x)")
+ax.set_xlabel("ROI (profit / budget)")
+ax.set_ylabel("Number of movies")
+fig.tight_layout()
+fig.savefig("charts/roi_hist.png")
+plt.show()
+
+fig, ax = plt.subplots(figsize = (6,4))
+sns.scatterplot(data = clean, x = "budget", y = "revenue", alpha = 0.5, ax = ax)
+ax.set_xscale("log")
+ax.set_yscale("log")
+ax.set_title("Budget vs Revenue scatterplot")
+ax.set_ylabel("Budget (log scale)")
+ax.set_xlabel("Budget (log scale)")
+fig.tight_layout()
+fig.savefig("charts/budget_vs_revenue.png")  
+plt.show()
+
+corr = clean[["budget", "revenue", "popularity", "vote_average", "runtime", "roi"]].corr()
+fig, ax = plt.subplots(figsize =(7,5))
+sns.heatmap(corr, annot = True, fmt = ".2f", cmap = "coolwarm", ax = ax)
+fig.tight_layout()
+fig.savefig("charts/correlations.png")
 plt.show()
