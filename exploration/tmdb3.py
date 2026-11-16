@@ -76,6 +76,8 @@ print(len(clean), len(roi_small))
 # chart 4 histogram
 fig, ax = plt.subplots(figsize = (8,5))
 sns.histplot(data = roi_small, x = "roi", bins = 40, ax = ax)
+ax.axvline(clean["roi"].median(), linestyle="--", color="red", label="Median (1.30)")
+ax.legend()
 ax.set_title("Distribution of ROI (movies under 10x)")
 ax.set_xlabel("ROI (profit / budget)")
 ax.set_ylabel("Number of movies")
