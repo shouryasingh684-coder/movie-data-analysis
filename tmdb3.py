@@ -73,6 +73,7 @@ plt.show()
 roi_small = clean[clean["roi"] < 10]
 print(len(clean), len(roi_small))
 
+# chart 4 histogram
 fig, ax = plt.subplots(figsize = (8,5))
 sns.histplot(data = roi_small, x = "roi", bins = 40, ax = ax)
 ax.set_title("Distribution of ROI (movies under 10x)")
@@ -82,6 +83,7 @@ fig.tight_layout()
 fig.savefig("charts/roi_hist.png")
 plt.show()
 
+# chart 5 scatterplot
 fig, ax = plt.subplots(figsize = (6,4))
 sns.scatterplot(data = clean, x = "budget", y = "revenue", alpha = 0.5, ax = ax)
 ax.set_xscale("log")
@@ -93,6 +95,7 @@ fig.tight_layout()
 fig.savefig("charts/budget_vs_revenue.png")  
 plt.show()
 
+# chart 6 correlation table
 corr = clean[["budget", "revenue", "popularity", "vote_average", "runtime", "roi"]].corr()
 fig, ax = plt.subplots(figsize =(7,5))
 sns.heatmap(corr, annot = True, fmt = ".2f", cmap = "coolwarm", ax = ax)
